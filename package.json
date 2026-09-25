@@ -1,0 +1,19 @@
+{
+  "name": "tp-04-mascotas-ejs",
+  "version": "1.0.0",
+  "description": "Aplicación web en Node.js con Express y EJS para consultar mascotas en adopción.",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "check": "node --check src/index.js && node --check src/archivos.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.22.3",
+    "express-ejs-layouts": "^2.5.1"
+  }
+}

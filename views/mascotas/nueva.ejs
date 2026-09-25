@@ -1,0 +1,49 @@
+<div style="max-width: 500px; margin: 0 auto;">
+  <h1>Registrar Nueva Mascota</h1>
+
+  <% if (error) { %>
+    <div style="background-color: #f8d7da; color: #721c24; padding: 0.75rem 1.25rem; border: 1px solid #f5c6cb; border-radius: 4px; margin-bottom: 1rem;">
+      <%= error %>
+    </div>
+  <% } %>
+
+  <form method="POST" action="/mascotas">
+    <div style="margin-bottom: 1rem;">
+      <label for="nombre" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" value="<%= datos.nombre || '' %>" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;" required>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <label for="especie" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Especie:</label>
+      <select id="especie" name="especie" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;" required>
+        <option value="">Seleccionar especie...</option>
+        <option value="Perro" <%= datos.especie === 'Perro' ? 'selected' : '' %>>Perro</option>
+        <option value="Gato" <%= datos.especie === 'Gato' ? 'selected' : '' %>>Gato</option>
+        <option value="Conejo" <%= datos.especie === 'Conejo' ? 'selected' : '' %>>Conejo</option>
+        <option value="Otro" <%= datos.especie === 'Otro' ? 'selected' : '' %>>Otro</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <label for="edad" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Edad (años):</label>
+      <input type="number" id="edad" name="edad" min="0" value="<%= datos.edad !== undefined ? datos.edad : '' %>" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;" required>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <label for="estado" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Estado:</label>
+      <select id="estado" name="estado" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;" required>
+        <option value="En adopción" <%= datos.estado === 'En adopción' ? 'selected' : '' %>>En adopción</option>
+        <option value="Reservada" <%= datos.estado === 'Reservada' ? 'selected' : '' %>>Reservada</option>
+        <option value="Adoptada" <%= datos.estado === 'Adoptada' ? 'selected' : '' %>>Adoptada</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <label for="descripcion" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">Descripción:</label>
+      <textarea id="descripcion" name="descripcion" rows="4" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;" required><%= datos.descripcion || '' %></textarea>
+    </div>
+
+    <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem;">Guardar Mascota</button>
+    <a href="/mascotas" style="margin-left: 1rem; color: #6c757d; text-decoration: none;">Cancelar</a>
+  </form>
+</div>

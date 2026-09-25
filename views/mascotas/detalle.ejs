@@ -1,0 +1,13 @@
+<div class="detalle-contenedor" style="max-width: 600px; margin: 0 auto; padding: 1rem;">
+  <a href="/mascotas" style="display: inline-block; margin-bottom: 1rem; color: #007bff; text-decoration: none;">&larr; Volver al listado</a>
+
+  <h1><%= mascota.nombre %></h1>
+
+  <!-- Imagen de la mascota en vista de detalle -->
+  <img src="<%= mascota.imagen %>" alt="<%= mascota.nombre %>" style="width: 100%; max-width: 400px; height: auto; border-radius: 8px; margin-bottom: 1.5rem; display: block;">
+
+  <p><strong>Especie:</strong> <%= mascota.especie %></p>
+  <p><strong>Edad:</strong> <%= mascota.edad %> años</p>
+  <p><strong>Estado:</strong> <%= mascota.estado %></p>
+  <p><strong>Descripción:</strong> <%= mascota.descripcion %></p>
+</div>

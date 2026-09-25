@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "nombre": "Luna",
+    "especie": "Perro",
+    "edad": 2,
+    "estado": "En adopción",
+    "descripcion": "Luna es super juguetona y cariñosa, ideal para familias con chicos.",
+    "imagen": "/img/perro1.jpeg"
+  },
+  {
+    "id": 2,
+    "nombre": "Mishi",
+    "especie": "Gato",
+    "edad": 1,
+    "estado": "En adopción",
+    "descripcion": "Mishi es tranquilo, le encanta dormir al sol y recibir mimos.",
+    "imagen": "/img/gato1.jpeg"
+  },
+  {
+    "id": 3,
+    "nombre": "Thor",
+    "especie": "Perro",
+    "edad": 3,
+    "estado": "Reservada",
+    "descripcion": "Thor es muy obediente, sociable con otros animales y ama pasear.",
+    "imagen": "/img/perro2.jpeg"
+  },
+  {
+    "id": 4,
+    "nombre": "Cleo",
+    "especie": "Gato",
+    "edad": 0,
+    "estado": "Adoptada",
+    "descripcion": "Cleo es una gatita curiosa, llena de energía y muy compañera.",
+    "imagen": "/img/gato2.jpeg"
+  },
+  {
+    "id": 5,
+    "nombre": "Tambor",
+    "especie": "Conejo",
+    "edad": 1,
+    "estado": "En adopción",
+    "descripcion": "Tambor es muy amigable y le encantan las verduras frescas.",
+    "imagen": "/img/mascota.svg"
+  }
+]

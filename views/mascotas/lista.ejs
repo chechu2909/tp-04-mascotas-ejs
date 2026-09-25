@@ -1,0 +1,35 @@
+<h1>Mascotas en Adopción</h1>
+
+<form method="GET" action="/mascotas" style="margin-bottom: 2rem;">
+  <label for="especie">Filtrar por especie:</label>
+  <select name="especie" id="especie" onchange="this.form.submit()">
+    <option value="">Todas</option>
+    <option value="Perro" <%= especieSeleccionada === 'Perro' ? 'selected' : '' %>>Perro</option>
+    <option value="Gato" <%= especieSeleccionada === 'Gato' ? 'selected' : '' %>>Gato</option>
+  </select>
+  <a href="/mascotas" style="margin-left: 1rem;">Limpiar filtro</a>
+</form>
+
+<a href="/mascotas/nueva" style="display: inline-block; margin-bottom: 1.5rem; padding: 0.5rem 1rem; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px;">+ Registrar Mascota</a>
+
+<% if (mascotas.length === 0) { %>
+  <p>No se encontraron mascotas en esta categoría.</p>
+<% } else { %>
+  <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+    <% mascotas.forEach(mascota => { %>
+      <div style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem; width: 220px;">
+        
+        <!-- IMAGEN AGREGADA AQUÍ -->
+        <img src="<%= mascota.imagen %>" alt="<%= mascota.nombre %>" style="width: 100%; height: 160px; object-fit: cover; border-radius: 6px; margin-bottom: 0.8rem;">
+
+        <h3><%= mascota.nombre %></h3>
+        <p><strong>Especie:</strong> <%= mascota.especie %></p>
+        <p><strong>Edad:</strong> <%= mascota.edad %></p>
+        <% if (mascota.estado) { %>
+          <p><strong>Estado:</strong> <%= mascota.estado %></p>
+        <% } %>
+        <a href="/mascotas/<%= mascota.id %>" style="color: #007bff; text-decoration: none;">Ver detalle &rarr;</a>
+      </div>
+    <% }) %>
+  </div>
+<% } %>

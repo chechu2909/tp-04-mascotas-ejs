@@ -1,0 +1,1 @@
+console.log('TP-04 Mascotas EJS: Recursos estáticos cargados correctamente.');
