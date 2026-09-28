@@ -8,12 +8,6 @@ const PORT = process.env.PORT || 3000;
 
 // Carga inicial de datos en memoria temporal (Arreglo mutable)
 let mascotasMemoria = [];
-try {
-  mascotasMemoria = cargarMascotasIniciales();
-} catch (error) {
-  console.error(error.message);
-  process.exit(1); // Falla de inicio si los datos no se leen
-}
 
 // Configuración de EJS y Layouts
 app.set('view engine', 'ejs');
@@ -48,7 +42,7 @@ app.get('/mascotas', (req, res) => {
   });
 });
 
-// 3. GET /mascotas/nueva - Formulario (OBLIGATORIO: Declarar antes de /:id)
+// 3. GET /mascotas/nueva - Formulario
 app.get('/mascotas/nueva', (req, res) => {
   res.render('mascotas/nueva', {
     title: 'Registrar Mascota',
@@ -99,10 +93,7 @@ app.post('/mascotas', (req, res) => {
     imagen: '/img/mascota.svg' // Asignación obligatoria según consigna
   };
 
-  // Se agrega ÚNICAMENTE a la memoria del servidor
   mascotasMemoria.push(nuevaMascota);
-
-  // Redirección POST-Redirect-GET
   res.redirect('/mascotas');
 });
 
@@ -111,7 +102,17 @@ app.use((req, res) => {
   res.status(404).render('no-encontrado', { title: 'Página No Encontrada' });
 });
 
-// El servidor solo escucha si los datos iniciales se cargaron sin errores
-app.listen(PORT, () => {
-  console.log(`Servidor iniciado correctamente en http://localhost:${PORT}`);
-});
+// Función de inicio asíncrona para cargar los datos antes de escuchar peticiones
+async function iniciarServidor() {
+  try {
+    mascotasMemoria = await cargarMascotasIniciales();
+    app.listen(PORT, () => {
+      console.log(`Servidor iniciado correctamente en http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
+}
+
+iniciarServidor();
