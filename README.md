@@ -1,64 +1,74 @@
+
 # TP 04 — Aplicación Web de Mascotas con EJS
 
 ## ¿De qué trata el proyecto?
-Es una página web hecha con Node.js, Express y EJS para administrar un catálogo de mascotas en adopción. 
+Es una aplicación web que hice con Node.js, Express y EJS para administrar un refugio de mascotas en adopción. 
 
-La aplicación permite:
-* Ver la lista completa de mascotas y filtrarlas por especie.
-* Ver la información detallada de cada mascota.
-* Cargar nuevas mascotas mediante un formulario.
+La página permite:
+ Ver todas las mascotas registradas y filtrarlas según su especie (Perro, Gato, Conejo, etc.).
+ Entrar al detalle de cada mascota para ver más información.
+ Registrar nuevas mascotas desde un formulario con validaciones.
+ Cargar los datos al iniciar el servidor de forma asíncrona sin bloquear la aplicación.
 
 ---
 
 ## Cómo instalar y ejecutar el proyecto
 
-1. Descargar o clonar el proyecto.
-2. Abrir la terminal en la carpeta del proyecto e instalar las dependencias:
+1. Clonar o descargar el repositorio.
+2. Abrir la terminal dentro de la carpeta del proyecto e instalar las dependencias:
    ```bash
    npm install
-Iniciar el servidor:
+Levantar el servidor:
 
 Bash
 npm start
 Abrir el navegador e ingresar a: http://localhost:3000
 
-Páginas y Rutas
-GET /: Página de bienvenida.
+Rutas de la aplicación
+GET /: Página de inicio y bienvenida.
 
-GET /mascotas: Lista de todas las mascotas (con opción de filtrar).
+GET /mascotas: Listado general de mascotas (permite filtrar por especie usando ?especie=...).
 
-GET /mascotas/nueva: Formulario para agregar una mascota.
+GET /mascotas/nueva: Muestra el formulario para cargar una nueva mascota.
 
-GET /mascotas/:id: Ver el detalle de una mascota específica.
+GET /mascotas/:id: Muestra la ficha con el detalle de una mascota en particular.
 
-POST /mascotas: Guarda la nueva mascota enviada desde el formulario.
+POST /mascotas: Recibe los datos del formulario, los valida y agrega la mascota a la lista en memoria.
 
-Estructura del Proyecto
-views/layouts/main.ejs: Es el diseño base (HTML) que usan todas las páginas.
+Estructura del proyecto
+src/index.js: Es el archivo principal. Levanta el servidor Express, configura EJS y define las rutas de la web.
 
-views/: Contiene las páginas principales de la web (inicio.ejs, no-encontrado.ejs, etc.).
+src/archivos.js: Se encarga de leer el JSON inicial de forma asíncrona usando fs.promises y async/await.
 
-views/partials/: Partes repetitivas que se reutilizan en el sitio, como el encabezado (encabezado.ejs) y el pie de página (pie.ejs).
+datos/mascotas.json: Archivo JSON que contiene la lista inicial de mascotas.
 
-public/: Archivos estáticos como los estilos CSS, imágenes SVG y JavaScript del cliente.
+views/layouts/main.ejs: Plantilla base con el HTML principal y la estructura compartida del sitio.
 
-Respuestas a Preguntas Teóricas
+views/: Contiene las distintas páginas (inicio.ejs, lista.ejs, detalle.ejs, nueva.ejs y no-encontrado.ejs).
+
+views/partials/: Trozos de código reutilizables, como el encabezado (encabezado.ejs) y el pie de página (pie.ejs).
+
+public/: Archivos estáticos como los estilos CSS, las imágenes de los animales y el icono SVG (mascota.svg).
+
+Desarollo de Preguntas 
+
 ¿Qué diferencia hay entre layout, vista y parcial?
+Layout: Es la estructura fija de HTML que comparten todas las páginas de la web (como la etiqueta <html>, <head> y la llamada al CSS).
 
-El layout es la plantilla general con la estructura HTML de todo el sitio. La vista es la página específica que cambia según la ruta (por ejemplo, el formulario o el detalle). El parcial es un pedazo de código chico que se repite en varias páginas, como el menú de arriba o el pie de página.
+Vista: Es el contenido específico de la página que el usuario está viendo en ese momento (por ejemplo, el formulario de carga o la lista general).
+
+Parcial: Es un pedazo de plantilla reutilizable que se repite en varios lados para no copiar y pegar código, como el menú superior o el footer.
 
 ¿Cómo pasan los datos del servidor a la vista en EJS?
-
-Se envían usando res.render('nombre-vista', { datos }) desde Node.js. Dentro del archivo .ejs, se muestran usando <%= %> para texto normal o <%- %> si se incluye HTML o parciales.
+En el servidor usamos res.render('nombre-de-vista', { datos }) para enviar variables a la plantilla. Dentro del archivo .ejs, usamos <%= %> cuando queremos mostrar texto o números, y <%- %> si necesitamos incluir un archivo parcial o código HTML.
 
 ¿Para qué sirven express.static y express.urlencoded?
+express.static: Le indica a Express en qué carpeta guardamos los archivos públicos que el navegador necesita pedir directamente (CSS, imágenes SVG/JPG, JS del cliente).
 
-express.static le dice a Express qué carpeta tiene los archivos públicos (CSS, imágenes, JS). express.urlencoded sirve para que Express pueda leer los datos que el usuario escribe en un formulario POST (req.body).
+express.urlencoded: Es un middleware que permite a Express entender y procesar los datos que el usuario manda al enviar un formulario mediante el método POST (req.body).
 
 ¿Cómo funciona el envío del formulario con POST y redirección?
-
-Cuando el usuario envía el formulario, los datos viajan por POST a /mascotas. El servidor los procesa y responde con una redirección (302) a la lista de mascotas. El navegador recibe eso y hace un GET /mascotas automático para mostrar la lista actualizada. Esto evita que si el usuario recarga la página, se vuelva a enviar la mascota duplicada.
+Cuando la persona llena el formulario y toca guardar, los datos viajan por POST a la ruta /mascotas. El servidor valida que todo esté bien, los agrega al listado y le responde al navegador con una redirección (HTTP 302). El navegador hace automáticamente una consulta GET /mascotas para cargar la lista actualizada. Esto se usa para evitar que si el usuario refresca la página, se vuelva a enviar el formulario por duplicado.
 
 ¿Por qué desaparece la nueva mascota cuando reinicio el servidor?
-
-Porque los datos nuevos se guardan en un arreglo dentro de la memoria RAM mientras el servidor está prendido. Al reiniciar Node.js, la memoria se borra y la aplicación vuelve a leer únicamente el archivo original mascotas.json.
+Porque la nueva mascota se guarda únicamente en una variable en la memoria RAM mientras la aplicación está corriendo. Al reiniciar el servidor de Node.js, esa memoria se limpia y el programa vuelve a leer solamente las mascotas originales que están en el archivo datos/mascotas.json.

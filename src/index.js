@@ -66,16 +66,28 @@ app.get('/mascotas/:id', (req, res) => {
   });
 });
 
-// 5. POST /mascotas - Procesar formulario de nueva mascota
+// 5. POST /mascotas - Procesar formulario de nueva mascota con validación de estado
 app.post('/mascotas', (req, res) => {
   const { nombre, especie, edad, estado, descripcion } = req.body;
   const edadNumero = parseInt(edad, 10);
 
-  // Validación de campos obligatorios y edad numérica >= 0
-  if (!nombre || !especie || edad === '' || isNaN(edadNumero) || edadNumero < 0 || !estado || !descripcion) {
+  // Lista blanca de estados permitidos
+  const estadosPermitidos = ['En adopción', 'Adoptada', 'Reservada'];
+
+  // Validación estricta de campos, edad y estado
+  if (
+    !nombre || 
+    !especie || 
+    edad === '' || 
+    isNaN(edadNumero) || 
+    edadNumero < 0 || 
+    !estado || 
+    !estadosPermitidos.includes(estado.trim()) ||
+    !descripcion
+  ) {
     return res.status(400).render('mascotas/nueva', {
       title: 'Registrar Mascota',
-      error: 'Todos los campos son obligatorios y la edad debe ser mayor o igual a cero.',
+      error: 'Todos los campos son obligatorios, la edad debe ser mayor o igual a cero y el estado debe ser válido.',
       datos: { nombre, especie, edad, estado, descripcion }
     });
   }
@@ -90,7 +102,7 @@ app.post('/mascotas', (req, res) => {
     edad: edadNumero,
     estado: estado.trim(),
     descripcion: descripcion.trim(),
-    imagen: '/img/mascota.svg' // Asignación obligatoria según consigna
+    imagen: '/img/mascota.svg' // Asignación obligatoria
   };
 
   mascotasMemoria.push(nuevaMascota);
@@ -102,7 +114,7 @@ app.use((req, res) => {
   res.status(404).render('no-encontrado', { title: 'Página No Encontrada' });
 });
 
-// Función de inicio asíncrona para cargar los datos antes de escuchar peticiones
+// Función de inicio asíncrona
 async function iniciarServidor() {
   try {
     mascotasMemoria = await cargarMascotasIniciales();
